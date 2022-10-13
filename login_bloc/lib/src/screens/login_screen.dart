@@ -15,7 +15,7 @@ class LoginScreen extends StatelessWidget {
           Container(
             margin: EdgeInsets.only(top: 20.0),
           ),
-          submitButton(),
+          submitButton(bloc),
         ],
       ),
     );
@@ -52,14 +52,16 @@ class LoginScreen extends StatelessWidget {
         });
   }
 
-  Widget submitButton() {
-    return ElevatedButton(
-      onPressed: () {},
-      child: Text('Submit'),
-      style: ButtonStyle(
-        backgroundColor: MaterialStateProperty.all<Color>(Colors.blue),
-        foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
-      ),
-    );
+  Widget submitButton(Bloc bloc) {
+    return StreamBuilder(
+        stream: bloc.submitValid,
+        builder: (context, snapshot) {
+          return ElevatedButton(
+            onPressed: (snapshot.hasError || snapshot.data == null)
+                ? null
+                : bloc.submit,
+            child: Text('Submit'),
+          );
+        });
   }
 }
