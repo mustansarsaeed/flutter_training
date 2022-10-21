@@ -12,9 +12,10 @@ class NewsApiProvider implements Source {
 
   Future<List<int>> fetchTopIds() async {
     final response = await client.get(Uri.parse('$_root/topstories.json'));
+    print('response=$response');
     final ids = json.decode(response.body);
-
-    return ids;
+    print('typeof ${ids.runtimeType}');
+    return ids.cast<int>();
   }
 
   Future<ItemModel> fetchItem(id) async {
