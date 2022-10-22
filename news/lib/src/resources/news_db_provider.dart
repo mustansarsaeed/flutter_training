@@ -17,7 +17,7 @@ class NewsDatabaseProvider implements Source, Cache {
 
   init() async {
     Directory directory = await getApplicationDocumentsDirectory();
-    final path = join(directory.path, 'items.db');
+    final path = join(directory.path, 'items2.db');
     database = await openDatabase(path,
         version: 1,
         onCreate: (newDb, version) => {
@@ -61,7 +61,11 @@ CREATE TABLE items
     late Future<int> result;
 
     try {
-      result = database.insert("items", item.toMap());
+      result = database.insert(
+        "items",
+        item.toMap(),
+        conflictAlgorithm: ConflictAlgorithm.replace,
+      );
     } catch (ex, st) {
       print(ex);
       print(st);
@@ -74,6 +78,10 @@ CREATE TABLE items
   @override
   Future<List<int>> fetchTopIds() {
     throw UnimplementedError();
+  }
+
+  Future<int> clear() {
+    return database.delete("items");
   }
 }
 
