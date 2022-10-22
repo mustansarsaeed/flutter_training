@@ -11,21 +11,24 @@ import 'repository.dart';
 class NewsDatabaseProvider implements Source, Cache {
   late Database database;
 
+  NewsDatabaseProvider() {
+    init();
+  }
+
   init() async {
     Directory directory = await getApplicationDocumentsDirectory();
     final path = join(directory.path, 'items.db');
-
     database = await openDatabase(path,
         version: 1,
         onCreate: (newDb, version) => {
-              database.execute("""
+              newDb.execute("""
 CREATE TABLE items
 (
   id INTEGER PRIMARY KEY,
   type text,
-  by text,
-  time integer,
-  text text,
+  created_by text,
+  newsTime integer,
+  content text,
   parent integer,
   kids blob,
   dead integer,
@@ -33,7 +36,7 @@ CREATE TABLE items
   url text,
   score integer, 
   title text,
-  descendants interger
+  descendants integer
 )
 """)
             });
@@ -55,7 +58,17 @@ CREATE TABLE items
   }
 
   Future<int> addItem(ItemModel item) {
-    return database.insert("items", item.toMap());
+    late Future<int> result;
+
+    try {
+      result = database.insert("items", item.toMap());
+    } catch (ex, st) {
+      print(ex);
+      print(st);
+      exit(0);
+    }
+
+    return result;
   }
 
   @override
@@ -63,3 +76,5 @@ CREATE TABLE items
     throw UnimplementedError();
   }
 }
+
+final newsDatabaseProvider = NewsDatabaseProvider();

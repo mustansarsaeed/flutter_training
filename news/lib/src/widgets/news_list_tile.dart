@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import '../models/item_model.dart';
 import '../blocks/stories_provider.dart';
+import '../models/item_model.dart';
 
 class NewsListTile extends StatelessWidget {
   late int itemId;
 
-  NewsListTile({required this.itemId});
+  NewsListTile({required int this.itemId});
 
   Widget build(context) {
     final bloc = StoriesProvider.of(context);

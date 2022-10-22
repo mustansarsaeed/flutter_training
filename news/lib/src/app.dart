@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'screens/news_list.dart';
 import 'blocks/stories_provider.dart';
+import 'screens/news_list.dart';
 
 class App extends StatelessWidget {
   Widget build(context) {

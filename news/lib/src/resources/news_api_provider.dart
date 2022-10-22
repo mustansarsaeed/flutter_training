@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:http/http.dart' show Client;
 import 'package:news/src/models/item_model.dart';
 import '../models/item_model.dart';
@@ -12,9 +13,7 @@ class NewsApiProvider implements Source {
 
   Future<List<int>> fetchTopIds() async {
     final response = await client.get(Uri.parse('$_root/topstories.json'));
-    print('response=$response');
     final ids = json.decode(response.body);
-    print('typeof ${ids.runtimeType}');
     return ids.cast<int>();
   }
 
@@ -22,6 +21,16 @@ class NewsApiProvider implements Source {
     final response = await client.get(Uri.parse('$_root/item/$id.json'));
     final parsedJson = json.decode(response.body);
     // print('parsedJson $parsedJson');
-    return ItemModel.fromJson(parsedJson);
+    late ItemModel item;
+    try {
+      item = ItemModel.fromJson(parsedJson);
+    } catch (ex, st) {
+      print('Exception occured: $ex');
+      print('Stacktrace: $st');
+      exit(0);
+    }
+
+    // print(item.title);
+    return item;
   }
 }
