@@ -24,17 +24,20 @@ class NewsListTile extends StatelessWidget {
               return LoadingContainer();
             }
 
-            return buildListTile(itemSnapshot.data!);
+            return buildListTile(context, itemSnapshot.data!);
           },
         );
       },
     );
   }
 
-  Widget buildTile(ItemModel item) {
+  Widget buildTile(BuildContext context, ItemModel item) {
     return Column(
       children: [
         ListTile(
+          onTap: () {
+            Navigator.pushNamed(context, '${item.id}');
+          },
           title: Text(item.title),
           subtitle: Text('${item.score} points'),
           trailing: Column(
@@ -48,7 +51,7 @@ class NewsListTile extends StatelessWidget {
     );
   }
 
-  Widget buildListTile(ItemModel item) {
-    return buildTile(item);
+  Widget buildListTile(BuildContext context, ItemModel item) {
+    return buildTile(context, item);
   }
 }

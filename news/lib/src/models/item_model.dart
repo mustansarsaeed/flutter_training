@@ -26,7 +26,7 @@ class ItemModel {
         kids = parsedJson['kids'] ?? [],
         url = parsedJson['url'] ?? '',
         score = parsedJson['score'] ?? 0,
-        title = parsedJson['title'],
+        title = parsedJson['title'] ?? '',
         descendants = parsedJson['descendants'] ?? 0;
 
   ItemModel.fromDb(Map<String, dynamic> parsedJson)
